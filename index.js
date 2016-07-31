@@ -27,15 +27,13 @@ var io = new socket(server);
 io.on('connection', function(socket) {
   // Sse setInterval function to send new data every 5 secs
   setInterval(function(){
-
-    // HighCharts requires data in a 2 element array [time, value]
-    /* Example without raspberry pi:
+    // Example without raspberry pi:
     var date = new Date();
     var temp = Math.random();
     socket.emit('temperatureUpdate', date.getTime(), temp);
     console.log('temperatureUpdate: [ ' + date.toISOString() + ' , ' + temp + ' ]');
-    */
 
+    /*
     // User child_process to run a Linux command and retrieve the output from stdout
     child = child_process.exec("cat /sys/class/thermal/thermal_zone0/temp", function (error, stdout, stderr) {
     if (error !== null) {
@@ -46,6 +44,6 @@ io.on('connection', function(socket) {
       var temp = parseFloat(stdout)/1000;
       socket.emit('temperatureUpdate', date, temp);
     }
-  });
-  }, 5000);
+  });*/
+}, 1000);
 });
