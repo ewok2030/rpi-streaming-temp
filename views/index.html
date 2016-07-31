@@ -1,6 +1,7 @@
 
-  <!--  'll have the div where the graph. I tell it that the width of the
-       screen is 100% and the height is 400px -->
+  <!--  The following will be injected into the main.html file via {{{body}}} -->
+
+  <!-- HighCharts requires a div with fixed width and height -->
   <div id="chart" style="width:100%; height:400px;"></div>
   <!-- Javascript Begins -->
   <script src="/socket.io/socket.io.js"></script>
@@ -9,27 +10,20 @@
   $(function(){
     // Connect to the websocket (assuming your hostname is raspberrypi)
     var socket = io.connect('http://raspberrypi.local:3000');
-    /*
-	* Create the HighCharts object (from highcharts.js)
-	*
-	*/ 
+    // Create the HighCharts.Chart object (from highcharts.js)
     var chart;
     chart = new Highcharts.Chart({
         chart: {
-            renderTo: 'chart',
-            defaultSeriesType: 'spline',
-            events: {
+            renderTo: 'chart', // div with fixed width
+            events: { // On the chart loaded event, register with socket.io
                 load: function() {
-                    // Each time you receive a value from the socket, I put it on the graph
+                    // Each time an update is published to temperatureUpdate, add point to chart
                     socket.on('temperatureUpdate', function (time, data) {
                         var series = chart.series[0];
                         series.addPoint([time, data]);
                     });
                 }
             }
-        },
-        rangeSelector : {
-            selected : 100
         },
         title: {
             text: 'CPU Temperature Raspberry Pi'
@@ -55,4 +49,3 @@
   });
 
   </script>
-
